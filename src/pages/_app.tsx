@@ -1,8 +1,16 @@
 import { ErrorFallbackProps, ErrorComponent, ErrorBoundary, AppProps } from "@blitzjs/next"
 import { AuthenticationError, AuthorizationError } from "blitz"
-import React from "react"
+import React, { Suspense, useMemo } from "react"
 import { withBlitz } from "src/blitz-client"
-import 'src/styles/globals.css'
+import { ConnectionProvider, WalletProvider } from "@solana/wallet-adapter-react"
+import { WalletModalProvider } from "@solana/wallet-adapter-react-ui"
+import "src/styles/globals.css"
+
+import "src/core/styles/index.css"
+import { WalletAdapterNetwork } from "@solana/wallet-adapter-base"
+import { clusterApiUrl } from "@solana/web3.js"
+
+require("@solana/wallet-adapter-react-ui/styles.css")
 
 function RootErrorFallback({ error }: ErrorFallbackProps) {
   if (error instanceof AuthenticationError) {
@@ -26,10 +34,22 @@ function RootErrorFallback({ error }: ErrorFallbackProps) {
 
 function MyApp({ Component, pageProps }: AppProps) {
   const getLayout = Component.getLayout || ((page) => page)
+
+  // You can also provide a custom RPC endpoint.
+  const endpoint = process.env.NEXT_PUBLIC_RPC_URL!
+
   return (
-    <ErrorBoundary FallbackComponent={RootErrorFallback}>
-      {getLayout(<Component {...pageProps} />)}
-    </ErrorBoundary>
+    <ConnectionProvider endpoint={endpoint}>
+      <WalletProvider wallets={[]} autoConnect>
+        <WalletModalProvider>
+          <Suspense fallback="Loading...">
+            <ErrorBoundary FallbackComponent={RootErrorFallback}>
+              {getLayout(<Component {...pageProps} />)}
+            </ErrorBoundary>
+          </Suspense>
+        </WalletModalProvider>
+      </WalletProvider>
+    </ConnectionProvider>
   )
 }
 
