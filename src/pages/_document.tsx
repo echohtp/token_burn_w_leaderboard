@@ -1,4 +1,5 @@
 import Document, { Html, Main, NextScript, Head } from "next/document"
+import Footer from "src/core/components/Footer"
 
 class MyDocument extends Document {
   // Only uncomment if you need to customize this behaviour

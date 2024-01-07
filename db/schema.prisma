@@ -19,4 +19,5 @@ model Wallet {
   updatedAt    DateTime @updatedAt
   pubkey       String
   burnedTokens Int
+  twitter      String?
 }

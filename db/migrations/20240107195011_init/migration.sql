@@ -5,6 +5,7 @@ CREATE TABLE "Wallet" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "pubkey" TEXT NOT NULL,
     "burnedTokens" INTEGER NOT NULL,
+    "twitter" TEXT,
 
     CONSTRAINT "Wallet_pkey" PRIMARY KEY ("id")
 );

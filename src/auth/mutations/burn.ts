@@ -15,12 +15,19 @@ async function burnTokens(value: any) {
 
   if (!user) {
     user = await db.wallet.create({
-      data: { pubkey: value.pubkey, burnedTokens: value.additionalBurnedTokens },
+      data: {
+        pubkey: value.pubkey,
+        burnedTokens: value.additionalBurnedTokens,
+        twitter: value.twitterAccount,
+      },
     })
   } else {
     user = await db.wallet.update({
       where: { id: user.id },
-      data: { burnedTokens: user.burnedTokens + value.additionalBurnedTokens },
+      data: {
+        burnedTokens: user.burnedTokens + value.additionalBurnedTokens,
+        twitter: value.twitterAccount,
+      },
     })
   }
 
