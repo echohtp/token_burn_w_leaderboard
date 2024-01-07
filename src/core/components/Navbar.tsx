@@ -1,6 +1,7 @@
 import { Fragment } from "react"
 import { Disclosure, Menu, Transition } from "@headlessui/react"
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline"
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui"
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ")
@@ -25,28 +26,25 @@ export default function Navbar() {
                   )}
                 </Disclosure.Button>
               </div>
-              <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                <div className="flex flex-shrink-0 items-center">
-                  <img
-                    className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                    alt="Your Company"
-                  />
-                </div>
-                <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-                  {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
+
+              <div className="flex flex-1 items-center w-full justify-center sm:items-stretch sm:justify-start">
+                <div className="hidden sm:ml-6 sm:flex sm:space-x-8 items-center justify-center">
                   <a
                     href="/"
                     className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-900 hover:border-gray-300"
                   >
                     BURN
                   </a>
+
                   <a
                     href="leaderboard"
                     className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
                   >
                     Leaderboard
                   </a>
+                </div>
+                <div className="hidden sm:ml-6 sm:flex sm:space-x-8 items-center justify-center">
+                  <WalletMultiButton />
                 </div>
               </div>
             </div>
