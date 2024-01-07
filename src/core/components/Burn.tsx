@@ -6,6 +6,7 @@ import { Connection, PublicKey, Transaction, clusterApiUrl } from "@solana/web3.
 import { createBurnCheckedInstruction, getAssociatedTokenAddress } from "@solana/spl-token"
 import { useMutation } from "@blitzjs/rpc"
 import { useConnection, useWallet } from "@solana/wallet-adapter-react"
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui"
 
 const Burn = () => {
   const [burnMutation] = useMutation(burnTokens)
@@ -85,53 +86,64 @@ const Burn = () => {
 
   return (
     <>
-      <Formik
-        initialValues={{
-          additionalBurnedTokens: 0,
-          pubkey: publicKey?.toBase58(),
-          twitterAccount: "",
-          tx: "",
-        }}
-        onSubmit={handleSubmit}
-      >
-        {({ setFieldValue }) => (
-          <Form className="flex flex-col items-center">
-            <p
-              onClick={() => {
-                setFieldValue("additionalBurnedTokens", tokenBalance)
-              }}
-              className="my-2 font-medium text-blue-500 hover:underline cursor-pointer"
-            >
-              Balance: {tokenBalance}
-            </p>
-            <Field
-              className="inline-block"
-              id="additionalBurnedTokens"
-              name="additionalBurnedTokens"
-              type="float"
-              className="border border-gray-300 rounded-md p-2 mb-4"
-              min={0}
-              max={tokenBalance}
-            />
+      {connected ? (
+        <>
+          <Formik
+            initialValues={{
+              additionalBurnedTokens: 0,
+              pubkey: publicKey?.toBase58(),
+              twitterAccount: "",
+              tx: "",
+            }}
+            onSubmit={handleSubmit}
+          >
+            {({ setFieldValue }) => (
+              <Form className="flex flex-col items-center">
+                <p
+                  onClick={() => {
+                    setFieldValue("additionalBurnedTokens", tokenBalance)
+                  }}
+                  className="my-2 font-medium text-blue-500 hover:underline cursor-pointer"
+                >
+                  Balance: {tokenBalance}
+                </p>
+                <Field
+                  className="inline-block"
+                  id="additionalBurnedTokens"
+                  name="additionalBurnedTokens"
+                  type="float"
+                  className="border border-gray-300 rounded-md p-2 mb-4"
+                  min={0}
+                  max={tokenBalance}
+                />
 
-            <Field
-              className="inline-block"
-              id="twitterAccount"
-              name="twitterAccount"
-              type="string"
-              className="border border-gray-300 rounded-md p-2 mb-4"
-              placeholder="Twitter Account (optional)"
-            />
+                <Field
+                  className="inline-block"
+                  id="twitterAccount"
+                  name="twitterAccount"
+                  type="string"
+                  className="border border-gray-300 rounded-md p-2 mb-4"
+                  placeholder="Twitter Account (optional)"
+                />
 
-            <button
-              type="submit"
-              className="bg-blue-500 text-white py-2 px-4 rounded-md inline-block"
-            >
-              Burn
-            </button>
-          </Form>
-        )}
-      </Formik>
+                <button
+                  type="submit"
+                  className="bg-blue-500 text-white py-2 px-4 rounded-md inline-block"
+                >
+                  Burn
+                </button>
+              </Form>
+            )}
+          </Formik>
+        </>
+      ) : (
+        <>
+          <div className="text-center h-[200px]">
+            <p className="py-4">Connect your wallet to burn tokens.</p>
+            <WalletMultiButton />
+          </div>
+        </>
+      )}
     </>
   )
 }
